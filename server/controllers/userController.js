@@ -58,6 +58,7 @@ const deleteUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
+    console.log("logging in...");
     const { email, password } = req.body;
 
     // Find the user by email
@@ -90,4 +91,48 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, createUser, updateUser, deleteUser, loginUser };
+const registerUser = async (req, res) => {
+  try {
+    const { 
+      firstName, lastName, age, gender, contactNumber, 
+      email, username, password, address 
+    } = req.body;
+
+    // 1. Check if user already exists (email or username)
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User with this email or username already exists.' });
+    }
+
+    // 2. Hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // 3. Create the new user
+    // Note: We do not let the user set 'type' or 'isActive' here for security. 
+    // They default to 'editor' and 'true' based on your Schema.
+    const newUser = new User({
+      firstName,
+      lastName,
+      age,
+      gender,
+      contactNumber,
+      email,
+      username,
+      password: hashedPassword,
+      address,
+      type: 'editor' // Explicitly setting default or handling logic if needed
+    });
+
+    // 4. Save to Database
+    await newUser.save();
+
+    res.status(201).json({ message: 'User registered successfully', userId: newUser._id });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error during registration.' });
+  }
+};
+
+module.exports = { getUsers, createUser, updateUser, deleteUser, loginUser, registerUser };

@@ -16,6 +16,7 @@ import DashArticleListPage from './pages/DashboardPages/DashArticleListPage';
 // Auth Pages
 import AuthLayout from './components/AuthLayout';
 import SignIn from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
 
 // Error Page
 import NotFoundPage from './pages/NotFoundPage';
@@ -55,6 +56,10 @@ const routes = [
         path: "signin",
         element: <SignIn />,
       },
+      {
+        path: "signup",
+        element: <SignUpPage />,
+      }
     ],
   },
   {

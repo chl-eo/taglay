@@ -23,6 +23,8 @@ app.use(jsonParser);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 const corsOptions = {
   origin: "*", // Allow all origins
   credentials: true, // Allow credentials

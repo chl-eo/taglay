@@ -6,7 +6,23 @@ const API = axios.create({
 });
 
 export const fetchArticles = () => API.get('/');
+
 export const fetchArticleByName = (name) => API.get(`/${name}`);
-export const createArticle = (article) => API.post('/', article);
-export const updateArticle = (id, article) => API.put(`/${id}`, article);
+
+export const createArticle = (formData) => {
+  return API.post('/', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
+export const updateArticle = (id, formData) => {
+  return API.put(`/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
 export const toggleArticleStatus = (id) => API.patch(`/${id}/toggle`);

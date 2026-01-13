@@ -6,7 +6,7 @@ import {
     Button, Stack, Typography, Modal, Paper, FormControl, InputAdornment, InputLabel,
     Input, TextField, MenuItem, Select, Switch
 } from '@mui/material';
-import { useDemoData } from '@mui/x-data-grid-generator';
+//import { useDemoData } from '@mui/x-data-grid-generator';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -70,11 +70,11 @@ const modalStyle = {
 };
 
 const UserListPage = () => {
-    const { data } = useDemoData({
-        dataSet: 'Commodity',
-        rowLength: 5,
-        maxColumns: 6,
-    });
+    //const { data } = useDemoData({
+    //   dataSet: 'Commodity',
+    // rowLength: 5,
+    // maxColumns: 6,
+    //});
     const [open, setOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false); // Track if editing
     const [editUserId, setEditUserId] = useState(null); // Track the user being edited

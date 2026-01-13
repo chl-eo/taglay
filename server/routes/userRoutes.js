@@ -17,5 +17,6 @@ router.route('/:id').put(updateUser).delete(deleteUser);
 
 // Add login route
 router.post('/login', loginUser);
+router.post('/register', createUser);
 
 module.exports = router;
