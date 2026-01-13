@@ -3,9 +3,6 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
-const bodyParser = require("body-parser");
-const jsonParser = bodyParser.json();
-
 const connectDB = require("./config/db");
 
 const userRoutes = require("./routes/userRoutes");
@@ -16,61 +13,43 @@ const app = express();
 // Database Connection
 connectDB();
 
+// Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-//Middleware
-app.use(jsonParser);
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
-
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
+// CORS Configuration
 const corsOptions = {
-  origin: "*", // Allow all origins
-  credentials: true, // Allow credentials
+  origin: "*",
+  credentials: true,
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-  preflightContinue: false,
-  optionsSuccessStatus: 204, // For legacy browser support
+  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+  optionsSuccessStatus: 204,
 };
-app.options("", cors(corsOptions)); // Pre-flight request for all routes
 app.use(cors(corsOptions));
 
-// Curb Cores Error by adding a header here
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-  );
-  next();
+// Serve uploaded images (only works locally, not on Vercel)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Health check route
+app.get("/", (req, res) => {
+  res.json({ message: "Beyond Beauty API is running! 💄" });
 });
 
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/articles", articleRoutes);
 
-//Getting UI
-// if (process.env.NODE_ENV === "production") {
-//     const root = path.join(__dirname, '../robles-front-end/dist');
-//     app.use(express.static(root));
-//     app.all('/{*any}', (req, res, next) => {
-//         res.sendFile(path.join(root, 'index.html'));
-//     })
-//     // app.get('*', (req, res) => {
-//         // res.sendFile(path.join(root, 'index.html'));
-//     // });
-// }
-
 // Error Handling
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Server Error" });
+  console.error('Error:', err.stack);
+  res.status(500).json({ message: "Server Error", error: err.message });
 });
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Only listen in development (not on Vercel)
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 8000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
+// Export for Vercel
+module.exports = app;

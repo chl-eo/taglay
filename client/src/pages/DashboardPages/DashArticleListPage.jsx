@@ -220,7 +220,7 @@ function DashArticleListPage() {
         params.row.image ? (
           <Box
             component="img"
-            src={`${BASE_URL}${params.row.image}`}
+            src={params.row.image?.startsWith('http') ? params.row.image : `${BASE_URL}${params.row.image}`}
             alt={params.row.name}
             sx={{
               width: 50,

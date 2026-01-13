@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "@mui/icons-material": "^7.3.7"
+    "@mui/icons-material": "^7.3.7",
+    "cloudinary": "^2.8.0",
+    "multer-storage-cloudinary": "^2.2.1"
   }
 }

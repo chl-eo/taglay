@@ -149,7 +149,8 @@ function ArticlePage() {
           >
             <Box
               component="img"
-              src={`${BASE_URL}${article.image}`}
+              src={article.image?.startsWith('http') ? article.image : `${BASE_URL}${article.image}`}
+
               alt={article.title}
               sx={{
                 width: '100%',

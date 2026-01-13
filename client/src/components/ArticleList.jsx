@@ -22,7 +22,8 @@ function ArticleList({ articles }) {
             {article.image ? (
               <div className="article-card__image">
                 <img
-                  src={`${BASE_URL}${article.image}`}
+                  src={article.image?.startsWith('http') ? article.image : `${BASE_URL}${article.image}`}
+
                   alt={article.title}
                 />
               </div>
