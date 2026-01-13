@@ -20,5 +20,17 @@
     "mongoose": "^8.14.2",
     "multer": "^2.0.2",
     "multer-storage-cloudinary": "^2.2.1"
+  },
+
+  "devDependencies": {
+    "cloudinary": "^1.41.0",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0"
   }
-}
+
+  }
+
+  
+
+  
+
